@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'user_auth',
-    'accounts'
+    'accounts',
+    'purchase',
+    'income'
 ]
 
 REST_FRAMEWORK = {
