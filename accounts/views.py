@@ -1,5 +1,16 @@
 from rest_framework import generics, permissions, response
+
+from accounts.models import Account
 from .serializers import AccountSerializer
+
+def has_account(request):
+  try:
+    if request.user.account:
+      return True
+    else:
+      return False
+  except Account.DoesNotExist:
+    return False
 
 class UserAccountView(generics.GenericAPIView):
   serializer_class = AccountSerializer
@@ -8,7 +19,7 @@ class UserAccountView(generics.GenericAPIView):
   ]
 
   def post(self, request):
-    if request.user.account:
+    if has_account(request):
       return response.Response({
         'detail': 'Account already exists.'
       }, status=400)
@@ -17,7 +28,7 @@ class UserAccountView(generics.GenericAPIView):
     account = serializer.save(user=request.user)
 
     return response.Response({
-      'account': account.data
+      'account': AccountSerializer(request.user.account).data
     })
 
   def get(self, request):

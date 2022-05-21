@@ -7,4 +7,6 @@ urlpatterns = [
     path('auth/', include('user_auth.urls')),
     path('accounts/', include('accounts.urls')),
     path('income/', include('income.urls')),
+    path('purchase/', include('purchase.urls')),
+
 ]
