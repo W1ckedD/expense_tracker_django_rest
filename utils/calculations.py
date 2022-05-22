@@ -11,4 +11,10 @@ def calculate_current_balance(request):
   return _sum
 
 def calculate_purchase_total_price(purchase):
-  pass
+  _sum = 0
+  purchase_list_items = purchase.items.all()
+
+  for item in purchase_list_items:
+    _sum += item.price * item.quantity
+
+  return _sum

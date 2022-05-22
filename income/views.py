@@ -13,6 +13,7 @@ class IncomeList(generics.ListCreateAPIView):
     return Income.objects.filter(account=self.request.user.account)
 
   def perform_create(self, serializer):
+    serializer.save(account=self.request.user.account)
     account_serializer = AccountSerializer(self.request.user.account)
     account_serializer = AccountSerializer(
       self.request.user.account,
@@ -21,7 +22,6 @@ class IncomeList(generics.ListCreateAPIView):
     )
     account_serializer.is_valid(raise_exception=True)
     account_serializer.save()
-    serializer.save(account=self.request.user.account)
 
 class IncomeListItem(generics.RetrieveUpdateDestroyAPIView):
   lookup_field = 'id'
@@ -45,6 +45,7 @@ class IncomeListItem(generics.RetrieveUpdateDestroyAPIView):
 
 
   def perform_destroy(self, instance):
+    super().perform_destroy(instance)
     account_serializer = AccountSerializer(self.request.user.account)
     account_serializer = AccountSerializer(
       self.request.user.account,
@@ -53,7 +54,6 @@ class IncomeListItem(generics.RetrieveUpdateDestroyAPIView):
     )
     account_serializer.is_valid(raise_exception=True)
     account_serializer.save()
-    return super().perform_destroy(instance)
     
     
 
